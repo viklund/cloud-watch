@@ -1,0 +1,17 @@
+SSC:
+    type: openstack
+    password: <password>
+    user: <user>
+    domain: snic
+    projects:
+        - SNIC 2018/10-20
+    regions:
+        - name: HPC2N
+          auth_url: https://hpc2n.cloud.snic.se:5000
+          version: 3.x_password
+        - name: UPPMAX
+          auth_url: https://uppmax.cloud.snic.se:5000
+          version: 3.x_password
+        - name: C3SE
+          auth_url: https://c3se.cloud.snic.se:5000
+          version: 3.x_password
