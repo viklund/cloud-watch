@@ -32,3 +32,9 @@ SSC:
           auth_url: https://c3se.cloud.snic.se:5000
           version: 3.x_password
 ```
+
+# Run
+
+```bash
+$ cw
+```
