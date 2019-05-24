@@ -1,5 +1,6 @@
 from libcloud.compute.types import Provider
 from libcloud.compute.providers import get_driver
+from libcloud.common.types import LibcloudError
 
 import sys
 from pathlib import Path
@@ -58,12 +59,16 @@ class Tenant(object):
 
     def get_nodes(self):
         info = []
-        for n in self.driver.list_nodes():
-            # private_ips, public_ips
-            age = NOW - n.created_at
-            key = n.extra['key_name']
+        try:
+            for n in self.driver.list_nodes():
+                # private_ips, public_ips
+                age = NOW - n.created_at
+                key = n.extra['key_name']
 
-            info.append([self.tenant, self.region, n.name, n.state, age.days, n.created_at, ', '.join(n.public_ips), key])
+                info.append([self.tenant, self.region, n.name, n.state, age.days, n.created_at, ', '.join(n.public_ips), key])
+        except LibcloudError as e:
+            print(f"Error for {self.tenant} in {self.region}: {e}")
+
         return info
 
 
@@ -87,7 +92,6 @@ def main():
     tasks = []
     info = []
     for tenant in ts:
-        print(tenant.tenant)
         info.extend(tenant.get_nodes())
     print(tabulate(info, headers=['tenant', 'region', 'name', 'state', 'age (d)', 'created at', 'public ip', 'key'], tablefmt='simple'))
 
